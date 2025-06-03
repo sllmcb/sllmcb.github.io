@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livret d'Application EasyPeasy</title>
+    <title>Livret de Libération des Addictions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -15,6 +15,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --health: #ef4444;
         }
         
         * {
@@ -58,7 +59,7 @@
             width: 300px;
             height: 300px;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            background: radial-gradient(circle, var(--health) 0%, transparent 70%);
             opacity: 0.1;
             z-index: 1;
             animation: pulse 5s infinite alternate;
@@ -74,7 +75,7 @@
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
+            background: linear-gradient(to right, var(--health), var(--danger));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
@@ -90,7 +91,7 @@
         .section {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(93, 63, 211, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -106,13 +107,13 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
+            background: linear-gradient(to right, var(--health), var(--danger));
         }
         
         h2 {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            color: var(--accent);
+            color: var(--health);
             position: relative;
             padding-bottom: 10px;
         }
@@ -124,14 +125,14 @@
             left: 0;
             width: 60px;
             height: 3px;
-            background: var(--secondary);
+            background: var(--danger);
             border-radius: 3px;
         }
         
         h3 {
             font-size: 1.4rem;
             margin: 1.5rem 0 1rem;
-            color: var(--accent);
+            color: var(--health);
         }
         
         h4 {
@@ -160,13 +161,13 @@
             content: '•';
             position: absolute;
             left: 0;
-            color: var(--accent);
+            color: var(--health);
             font-weight: bold;
         }
         
         .intro-box {
-            background: rgba(93, 63, 211, 0.1);
-            border-left: 4px solid var(--secondary);
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 2rem;
@@ -185,7 +186,7 @@
         }
         
         th {
-            background: rgba(93, 63, 211, 0.3);
+            background: rgba(239, 68, 68, 0.3);
             color: var(--light);
             text-align: left;
             padding: 1rem;
@@ -203,11 +204,11 @@
         }
         
         .highlight {
-            background: rgba(0, 180, 216, 0.1);
+            background: rgba(239, 68, 68, 0.1);
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
             font-weight: 500;
-            color: var(--accent);
+            color: var(--health);
         }
         
         .coach-box {
@@ -235,7 +236,7 @@
         
         .week-card {
             background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(93, 63, 211, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 10px;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -243,8 +244,8 @@
         
         .week-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(93, 63, 211, 0.2);
-            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
+            border-color: var(--health);
         }
         
         .week-card h3 {
@@ -252,7 +253,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 1rem;
-            color: var(--accent);
+            color: var(--health);
         }
         
         .indicator {
@@ -274,14 +275,14 @@
         
         .exercise-card {
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(93, 63, 211, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.2);
             border-radius: 10px;
             padding: 1.5rem;
             transition: all 0.3s ease;
         }
         
         .exercise-card:hover {
-            border-color: var(--accent);
+            border-color: var(--health);
             background: rgba(15, 23, 42, 0.8);
         }
         
@@ -290,23 +291,23 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 1rem;
-            color: var(--accent);
+            color: var(--health);
         }
         
         .final-message {
-            background: linear-gradient(135deg, rgba(93, 63, 211, 0.1), rgba(0, 180, 216, 0.1));
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.1));
             border-radius: 12px;
             padding: 2rem;
             margin: 3rem 0;
             text-align: center;
-            border: 1px solid rgba(93, 63, 211, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             position: relative;
         }
         
         .final-message h3 {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            color: var(--accent);
+            color: var(--health);
         }
         
         .signature {
@@ -333,7 +334,7 @@
         
         .annex-card {
             background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(93, 63, 211, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 10px;
             padding: 1.5rem;
             text-align: center;
@@ -342,12 +343,12 @@
         
         .annex-card:hover {
             transform: translateY(-5px);
-            border-color: var(--accent);
+            border-color: var(--health);
         }
         
         .annex-card i {
             font-size: 2.5rem;
-            color: var(--accent);
+            color: var(--health);
             margin-bottom: 1rem;
         }
         
@@ -382,7 +383,7 @@
             
             .intro-box, .coach-box {
                 background: #f8f9fa;
-                border-left: 4px solid #5d3fd3;
+                border-left: 4px solid #ef4444;
             }
             
             th {
@@ -411,7 +412,7 @@
             }
             
             h2::after {
-                background: #5d3fd3;
+                background: #ef4444;
             }
             
             p, li {
@@ -420,7 +421,7 @@
             
             .highlight {
                 background: #e9ecef;
-                color: #5d3fd3;
+                color: #ef4444;
             }
         }
     </style>
@@ -430,19 +431,19 @@
         <header>
             <div class="glowing-circle"></div>
             <div class="header-content">
-                <h1>Livret d'Application EasyPeasy</h1>
-                <p class="subtitle">Transformez les concepts théoriques en actions concrètes avec ce guide pratique de coaching professionnel</p>
+                <h1>Livret de Libération des Addictions</h1>
+                <p class="subtitle">Méthode inspirée d'Allen Carr pour vous libérer définitivement de toute dépendance</p>
             </div>
         </header>
         
         <div class="intro-box">
             <h3>Introduction</h3>
-            <p>Ce livret a pour objectif de transformer les notions théoriques de la méthode EasyPeasy en un plan d'action concret et mesurable, à la manière d'un coach professionnel. Vous y trouverez :</p>
+            <p>Ce livret applique la méthode Allen Carr, célèbre pour son efficacité contre le tabagisme, à toutes les formes d'addiction. Vous y trouverez :</p>
             <ul>
-                <li>Un <span class="highlight">récapitulatif clair</span> des principes clés</li>
-                <li>Des <span class="highlight">exercices pratiques</span> pour chaque notion</li>
-                <li>Des <span class="highlight">points de bilan</span> intermédiaires</li>
-                <li>Un <span class="highlight">plan d'action personnalisé</span> pour garantir votre réussite</li>
+                <li>Une <span class="highlight">déconstruction systématique</span> des illusions liées à votre addiction</li>
+                <li>Des <span class="highlight">exercices pratiques</span> pour chaque étape du processus</li>
+                <li>Des <span class="highlight">points de bilan</span> pour mesurer votre progression</li>
+                <li>Un <span class="highlight">plan d'action clair</span> pour une libération définitive</li>
             </ul>
         </div>
         
@@ -462,7 +463,7 @@
                     <tbody>
                         <tr>
                             <td><strong>Illusion de plaisir</strong></td>
-                            <td>Croyance qu'il y a un réel plaisir ou un soutien dans la consommation de porno</td>
+                            <td>Croyance que l'addiction apporte un réel plaisir ou un soutien</td>
                             <td>Listez trois croyances personnelles à remettre en question</td>
                             <td>Mesure : 0 = totalement d'accord / 5 = plus du tout d'accord</td>
                         </tr>
@@ -473,8 +474,8 @@
                             <td>Notez leur impact émotionnel (faible/moyen/fort)</td>
                         </tr>
                         <tr>
-                            <td><strong>Effet Coolidge</strong></td>
-                            <td>Recherche constante de nouveauté dopaminergique</td>
+                            <td><strong>Effet de manque</strong></td>
+                            <td>Recherche constante de la substance/comportement addictif</td>
                             <td>Observez vos usages : notez date/heure/état émotionnel</td>
                             <td>% de sessions motivées par ennui vs stress vs autre</td>
                         </tr>
@@ -486,7 +487,7 @@
                         </tr>
                         <tr>
                             <td><strong>Ligne rouge</strong></td>
-                            <td>Limite subjective au-delà de laquelle le contenu devient choquant et renforce l'addiction</td>
+                            <td>Limite subjective au-delà de laquelle le comportement devient nocif</td>
                             <td>Tracez votre "ligne rouge" et notez quand elle est franchie</td>
                             <td>Nombre de franchissements / semaine</td>
                         </tr>
@@ -508,7 +509,7 @@
             
             <div class="exercise-card">
                 <h4><i class="fas fa-question"></i> Confiance en votre capacité</h4>
-                <p>Notez votre confiance à pouvoir arrêter immédiatement la consommation de porno :</p>
+                <p>Notez votre confiance à pouvoir arrêter immédiatement votre addiction :</p>
                 <p><em>0 = aucune confiance, 10 = confiance totale</em></p>
             </div>
             
@@ -520,8 +521,8 @@
             
             <div class="exercise-card">
                 <h4><i class="fas fa-stress"></i> Tolérance au stress</h4>
-                <p>Mesurez votre niveau de tolérance au stress sans recours au porno :</p>
-                <p><em>0 = incapable de gérer, 10 = excellente gestion sans porno</em></p>
+                <p>Mesurez votre niveau de tolérance au stress sans recours à l'addiction :</p>
+                <p><em>0 = incapable de gérer, 10 = excellente gestion sans addiction</em></p>
             </div>
             
             <h3>Analyse des Résultats</h3>
@@ -552,7 +553,7 @@
                     <p><strong>Actions clés:</strong></p>
                     <ul>
                         <li>Réaliser les exercices de la section Principes Fondamentaux</li>
-                        <li>Lire et surligner les chapitres 1 à 5 du livre</li>
+                        <li>Lire et surligner les chapitres clés de la méthode</li>
                     </ul>
                     <div class="indicator">Exercice de croyances complété à 100%</div>
                 </div>
@@ -562,7 +563,7 @@
                     <p><strong>Objectif principal:</strong> Observer ses automatismes et ses déclencheurs</p>
                     <p><strong>Actions clés:</strong></p>
                     <ul>
-                        <li>Tenir journal PMO quotidiennement</li>
+                        <li>Tenir journal de l'addiction quotidiennement</li>
                         <li>Identifier 3 déclencheurs majeurs</li>
                     </ul>
                     <div class="indicator">Journal tenu au quotidien et 3 déclencheurs formalisés</div>
@@ -573,10 +574,10 @@
                     <p><strong>Objectif principal:</strong> Expérimenter l'arrêt progressif sans culpabilité</p>
                     <p><strong>Actions clés:</strong></p>
                     <ul>
-                        <li>Appliquer la "période de désintoxication EasyPeasy"</li>
-                        <li>Remplacer les sessions par une activité bien-être</li>
+                        <li>Appliquer la "période de désintoxication"</li>
+                        <li>Remplacer les comportements addictifs par une activité bien-être</li>
                     </ul>
-                    <div class="indicator">Réduction de 50% des sessions par rapport à la semaine 1</div>
+                    <div class="indicator">Réduction de 50% des comportements addictifs par rapport à la semaine 1</div>
                 </div>
                 
                 <div class="week-card">
@@ -585,9 +586,9 @@
                     <p><strong>Actions clés:</strong></p>
                     <ul>
                         <li>Mettre en place un plan de soutien (amis, coach, groupe)</li>
-                        <li>Célébrer chaque jour sans PMO</li>
+                        <li>Célébrer chaque jour sans comportement addictif</li>
                     </ul>
-                    <div class="indicator">7 jours consécutifs sans PMO</div>
+                    <div class="indicator">7 jours consécutifs sans comportement addictif</div>
                 </div>
             </div>
             
@@ -604,7 +605,7 @@
                 <div class="exercise-card">
                     <h4><i class="fas fa-eye"></i> Visualisation positive</h4>
                     <p><strong>Durée:</strong> 10 min/jour</p>
-                    <p><strong>Instructions:</strong> Imaginez votre vie libérée de l'addiction avec le plus de détails sensoriels et émotionnels possible. Visualisez votre routine quotidienne, vos relations, et votre bien-être mental sans PMO.</p>
+                    <p><strong>Instructions:</strong> Imaginez votre vie libérée de l'addiction avec le plus de détails sensoriels et émotionnels possible. Visualisez votre routine quotidienne, vos relations, et votre bien-être mental sans addiction.</p>
                 </div>
                 
                 <div class="exercise-card">
@@ -647,7 +648,7 @@
             <div class="final-message">
                 <h3><i class="fas fa-quote-left"></i> Message du coach</h3>
                 <p>Bravo pour votre engagement et les progrès accomplis ! Chaque étape franchie, aussi petite soit-elle, vous rapproche de votre liberté définitive. Continuez à appliquer ces outils avec constance, mesurez régulièrement vos progrès, et célébrez chaque victoire. Rappelez-vous que la liberté durable est le fruit d'actions répétées et d'une vision claire de votre réussite.</p>
-                <p class="signature">Votre coach, Expert EasyPeasy</p>
+                <p class="signature">Votre coach, Expert en Libération des Addictions</p>
             </div>
         </div>
         
@@ -657,7 +658,7 @@
             <div class="annex-grid">
                 <div class="annex-card">
                     <i class="fas fa-book"></i>
-                    <h4>Modèle de journal PMO</h4>
+                    <h4>Modèle de journal d'addiction</h4>
                     <p>Template structuré pour suivre vos habitudes, déclencheurs et progrès</p>
                 </div>
                 
