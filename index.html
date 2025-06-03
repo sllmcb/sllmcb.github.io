@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livrets d'Application - Plateforme de Coaching</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #5d3fd3;
+            --accent: #00b4d8;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #1e293b);
+            color: var(--light);
+            line-height: 1.6;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .glowing-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.1;
+            z-index: 1;
+            animation: pulse 5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .intro-box {
+            background: rgba(93, 63, 211, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Navigation des catégories */
+        .categories-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .category-btn {
+            background: rgba(93, 63, 211, 0.2);
+            color: #e2e8f0;
+            border: 1px solid rgba(93, 63, 211, 0.3);
+            border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(93, 63, 211, 0.3);
+        }
+        
+        .category-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Section des livrets */
+        .booklets-section {
+            margin: 3rem 0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        .booklets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .booklet-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(93, 63, 211, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .booklet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(93, 63, 211, 0.2);
+            border-color: var(--accent);
+        }
+        
+        .booklet-category {
+            background: rgba(93, 63, 211, 0.2);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .booklet-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            flex-grow: 1;
+        }
+        
+        .booklet-description {
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+            flex-grow: 1;
+        }
+        
+        .booklet-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: #4a2fc1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(93, 63, 211, 0.3);
+        }
+        
+        .action-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        /* Section d'ajout */
+        .add-section {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(93, 63, 211, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .add-btn:hover {
+            background: #0da271;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .categories-nav {
+                gap: 0.5rem;
+            }
+            
+            .category-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .booklets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="glowing-circle"></div>
+            <div class="header-content">
+                <h1>Livrets d'Application</h1>
+                <p class="subtitle">Plateforme de coaching - Organisez, triez et partagez vos ressources pédagogiques</p>
+            </div>
+        </header>
+        
+        <div class="intro-box">
+            <h3>Ma démarche de création</h3>
+            <p>J'ai développé cette plateforme pour centraliser tous mes livrets d'application de coaching dans un espace unique et facile à gérer. Ma démarche repose sur trois principes clés :</p>
+            <ul>
+                <li><strong>Organisation par catégories</strong> - Classement thématique pour un accès rapide</li>
+                <li><strong>Design intuitif</strong> - Interface claire pour une utilisation simple</li>
+                <li><strong>Partage simplifié</strong> - Distribution facilitée à mes clients et collègues</li>
+            </ul>
+            <p>Cette plateforme me permet de maintenir une bibliothèque cohérente de ressources pédagogiques que je peux enrichir régulièrement.</p>
+        </div>
+        
+        <!-- Navigation par catégories -->
+        <div class="categories-nav">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-star"></i> Tous les livrets
+            </button>
+            <button class="category-btn" data-category="sante">
+                <i class="fas fa-heartbeat"></i> Santé & Bien-être
+            </button>
+            <button class="category-btn" data-category="developpement">
+                <i class="fas fa-brain"></i> Développement personnel
+            </button>
+            <button class="category-btn" data-category="productivite">
+                <i class="fas fa-tasks"></i> Productivité
+            </button>
+            <button class="category-btn" data-category="relations">
+                <i class="fas fa-users"></i> Relations
+            </button>
+            <button class="category-btn" data-category="finances">
+                <i class="fas fa-chart-line"></i> Finances
+            </button>
+        </div>
+        
+        <!-- Section des livrets -->
+        <div class="booklets-section">
+            <h2 class="section-title">Bibliothèque de livrets</h2>
+            
+            <div class="booklets-grid" id="booklets-container">
+                <!-- Les livrets seront ajoutés dynamiquement par JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Section d'ajout -->
+        <div class="add-section">
+            <h3><i class="fas fa-plus-circle"></i> Ajouter un nouveau livret</h3>
+            <p>Vous avez créé un nouveau livret d'application ? Ajoutez-le à votre bibliothèque pour le rendre accessible.</p>
+            <a href="#" class="add-btn">
+                <i class="fas fa-file-upload"></i> Ajouter un livret
+            </a>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>Plateforme de livrets d'application - Votre bibliothèque de coaching personnalisée</p>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-question-circle"></i> Aide</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Confidentialité</a>
+            </div>
+            <p>&copy; 2023 Tous droits réservés - Conçu avec passion pour le coaching</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Données des livrets
+        const booklets = [
+            {
+                id: 1,
+                title: "Méthode EasyPeasy Coaching",
+                category: "sante",
+                description: "Programme complet pour surmonter les addictions et retrouver un équilibre de vie.",
+                date: "15 Oct 2023",
+                pages: 28,
+                link: "easy-peasy.html"
+            },
+            {
+                id: 2,
+                title: "Transformez vos habitudes",
+                category: "developpement",
+                description: "Guide pratique pour créer des routines positives et durables dans votre quotidien.",
+                date: "22 Sep 2023",
+                pages: 32,
+                link: "habitudes.html"
+            },
+            {
+                id: 3,
+                title: "Gestion du temps optimale",
+                category: "productivite",
+                description: "Stratégies avancées pour maximiser votre productivité sans épuisement.",
+                date: "10 Sep 2023",
+                pages: 24,
+                link: "gestion-temps.html"
+            },
+            {
+                id: 4,
+                title: "Communication relationnelle",
+                category: "relations",
+                description: "Améliorez vos relations grâce à des techniques de communication efficaces.",
+                date: "05 Août 2023",
+                pages: 30,
+                link: "communication.html"
+            },
+            {
+                id: 5,
+                title: "Budget et épargne intelligente",
+                category: "finances",
+                description: "Méthode complète pour prendre le contrôle de vos finances personnelles.",
+                date: "28 Juil 2023",
+                pages: 26,
+                link: "finances.html"
+            },
+            {
+                id: 6,
+                title: "Méditation quotidienne",
+                category: "sante",
+                description: "Programme de 30 jours pour intégrer la méditation dans votre routine.",
+                date: "12 Juil 2023",
+                pages: 22,
+                link: "meditation.html"
+            },
+            {
+                id: 7,
+                title: "Fixer des objectifs efficaces",
+                category: "developpement",
+                description: "Méthodologie pour définir et atteindre vos objectifs personnels et professionnels.",
+                date: "30 Juin 2023",
+                pages: 20,
+                link: "objectifs.html"
+            }
+        ];
+        
+        // Fonction pour afficher les livrets
+        function displayBooklets(category = "all") {
+            const container = document.getElementById("booklets-container");
+            container.innerHTML = "";
+            
+            const filteredBooklets = category === "all" 
+                ? booklets 
+                : booklets.filter(booklet => booklet.category === category);
+            
+            if (filteredBooklets.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>Aucun livret trouvé dans cette catégorie</h3>
+                        <p>Vous pouvez créer un nouveau livret ou consulter d'autres catégories.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredBooklets.forEach(booklet => {
+                const categoryNames = {
+                    "sante": "Santé & Bien-être",
+                    "developpement": "Développement personnel",
+                    "productivite": "Productivité",
+                    "relations": "Relations",
+                    "finances": "Finances"
+                };
+                
+                const card = document.createElement("div");
+                card.className = "booklet-card";
+                card.innerHTML = `
+                    <div class="booklet-category">${categoryNames[booklet.category]}</div>
+                    <h3 class="booklet-title">${booklet.title}</h3>
+                    <p class="booklet-description">${booklet.description}</p>
+                    <div class="booklet-meta">
+                        <span><i class="far fa-calendar"></i> ${booklet.date}</span>
+                        <span><i class="far fa-file"></i> ${booklet.pages} pages</span>
+                    </div>
+                    <a href="${booklet.link}" class="action-btn">
+                        Consulter <i class="fas fa-arrow-right"></i>
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // Initialisation
+        document.addEventListener("DOMContentLoaded", () => {
+            // Afficher tous les livrets au chargement
+            displayBooklets();
+            
+            // Gestion des boutons de catégorie
+            const categoryBtns = document.querySelectorAll(".category-btn");
+            categoryBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    // Retirer la classe active de tous les boutons
+                    categoryBtns.forEach(b => b.classList.remove("active"));
+                    // Ajouter la classe active au bouton cliqué
+                    btn.classList.add("active");
+                    // Filtrer les livrets
+                    const category = btn.getAttribute("data-category");
+                    displayBooklets(category);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
