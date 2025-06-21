@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>300 Jours Vers la Gloire - Programme Sportif</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a4331;
+            --secondary: #3fd35d;
+            --accent: #ffab00;
+            --light: #f5f5f5;
+            --dark: #0d1f14;
+            --success: #4caf50;
+            --phase-1: #2e7d32;
+            --phase-2: #43a047;
+            --phase-3: #f57c00;
+            --phase-4: #d81b60;
+            --text: #e8f5e9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #1a4331);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            background: rgba(26, 67, 49, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(63, 211, 93, 0.3);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(63, 211, 93, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .deadline {
+            font-size: 1.2rem;
+            background: var(--secondary);
+            color: var(--dark);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(63, 211, 93, 0.5);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(63, 211, 93, 0.2);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(63, 211, 93, 0.3);
+        }
+        
+        .control-btn:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(63, 211, 93, 0.4);
+        }
+        
+        .control-btn.active {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(63, 211, 93, 0.4);
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            position: relative;
+            overflow-x: auto;
+            border: 1px solid rgba(63, 211, 93, 0.2);
+        }
+        
+        .timeline-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 4px;
+            background: var(--secondary);
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .phase-marker {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            min-width: 200px;
+        }
+        
+        .phase-dot {
+            width: 25px;
+            height: 25px;
+            background: var(--secondary);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            box-shadow: 0 0 15px var(--secondary);
+            position: relative;
+        }
+        
+        .phase-dot::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--dark);
+        }
+        
+        .phase-label {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .phase-dates {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .day-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(63, 211, 93, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .day-card.phase-1 {
+            border-left: 4px solid var(--phase-1);
+        }
+        
+        .day-card.phase-2 {
+            border-left: 4px solid var(--phase-2);
+        }
+        
+        .day-card.phase-3 {
+            border-left: 4px solid var(--phase-3);
+        }
+        
+        .day-card.phase-4 {
+            border-left: 4px solid var(--phase-4);
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .day-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--secondary);
+        }
+        
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(63, 211, 93, 0.2);
+        }
+        
+        .day-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .phase-tag {
+            background: rgba(63, 211, 93, 0.2);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .day-date {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .challenge-section {
+            margin-bottom: 15px;
+        }
+        
+        .challenge-section h4 {
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .challenge-list {
+            padding-left: 20px;
+        }
+        
+        .challenge-list li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            position: relative;
+            color: var(--text);
+        }
+        
+        .challenge-list li::before {
+            content: "•";
+            position: absolute;
+            left: -15px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
+        .validation {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(63, 211, 93, 0.2);
+        }
+        
+        .validation-check {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .validation-check.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+        
+        .validation-check.checked::after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 20px;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(63, 211, 93, 0.2);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(63, 211, 93, 0.3);
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: scale(1.1);
+        }
+        
+        .motivation {
+            text-align: center;
+            margin: 40px 0;
+            padding: 25px;
+            background: rgba(26, 67, 49, 0.5);
+            border-radius: 10px;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text);
+            position: relative;
+            border: 1px solid var(--secondary);
+        }
+        
+        .motivation::before, .motivation::after {
+            content: """;
+            font-size: 4rem;
+            position: absolute;
+            color: rgba(63, 211, 93, 0.3);
+        }
+        
+        .motivation::before {
+            top: 10px;
+            left: 20px;
+        }
+        
+        .motivation::after {
+            bottom: 10px;
+            right: 20px;
+            transform: rotate(180deg);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .calendar {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                flex-direction: column;
+                gap: 30px;
+                align-items: flex-start;
+            }
+            
+            .timeline-bar {
+                display: none;
+            }
+            
+            .phase-marker {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                min-width: 100%;
+            }
+            
+            .phase-dot {
+                flex-shrink: 0;
+            }
+            
+            .phase-info {
+                text-align: left;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 90%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>300 Jours Vers la Gloire</h1>
+            <div class="subtitle">Programme complet d'entraînement pour devenir un champion</div>
+            <div class="deadline">Objectif final : 20 Mai 2026 - Tournoi International</div>
+        </header>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Progression: 0%</div>
+        
+        <div class="controls">
+            <button class="control-btn active" data-phase="all">
+                <i class="fas fa-futbol"></i>
+                <span>Tous les jours</span>
+            </button>
+            <button class="control-btn" data-phase="1">
+                <i class="fas fa-dumbbell"></i>
+                <span>Phase 1: Fondations</span>
+            </button>
+            <button class="control-btn" data-phase="2">
+                <i class="fas fa-bolt"></i>
+                <span>Phase 2: Développement</span>
+            </button>
+            <button class="control-btn" data-phase="3">
+                <i class="fas fa-chess"></i>
+                <span>Phase 3: Stratégie</span>
+            </button>
+            <button class="control-btn" data-phase="4">
+                <i class="fas fa-trophy"></i>
+                <span>Phase 4: Excellence</span>
+            </button>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-bar"></div>
+            
+            <div class="phase-marker">
+                <div class="phase-dot"></div>
+                <div class="phase-info">
+                    <div class="phase-label">Phase 1: Fondations</div>
+                    <div class="phase-dates">Jours 1-90</div>
+                    <div>Endurance • Technique de base</div>
+                </div>
+            </div>
+            
+            <div class="phase-marker">
+                <div class="phase-dot"></div>
+                <div class="phase-info">
+                    <div class="phase-label">Phase 2: Développement</div>
+                    <div class="phase-dates">Jours 91-180</div>
+                    <div>Vitesse • Précision</div>
+                </div>
+            </div>
+            
+            <div class="phase-marker">
+                <div class="phase-dot"></div>
+                <div class="phase-info">
+                    <div class="phase-label">Phase 3: Stratégie</div>
+                    <div class="phase-dates">Jours 181-270</div>
+                    <div>Tactique • Intelligence de jeu</div>
+                </div>
+            </div>
+            
+            <div class="phase-marker">
+                <div class="phase-dot"></div>
+                <div class="phase-info">
+                    <div class="phase-label">Phase 4: Excellence</div>
+                    <div class="phase-dates">Jours 271-300</div>
+                    <div>Perfectionnement • Performance</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calendar" id="calendar">
+            <!-- Les jours seront générés dynamiquement par JavaScript -->
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- La pagination sera générée dynamiquement -->
+        </div>
+        
+        <div class="motivation">
+            "Chaque jour est une pierre posée sur le chemin de la grandeur. 
+            Chaque défi relevé est une victoire sur tes limites. 
+            Dans 300 jours, tu ne seras plus le même joueur, mais la version ultime de toi-même."
+        </div>
+    </div>
+    
+    <script>
+        // Données pour les 300 jours
+        const startDate = new Date(2025, 6, 21); // 21 Juillet 2025
+        const phases = [
+            { id: 1, name: "Fondations", days: 90, color: "--phase-1" },
+            { id: 2, name: "Développement", days: 90, color: "--phase-2" },
+            { id: 3, name: "Stratégie", days: 90, color: "--phase-3" },
+            { id: 4, name: "Excellence", days: 30, color: "--phase-4" }
+        ];
+        
+        // Générer les données pour les 300 jours
+        const daysData = [];
+        let dayCounter = 1;
+        
+        phases.forEach(phase => {
+            for (let i = 1; i <= phase.days; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + dayCounter - 1);
+                
+                // Formater la date
+                const formattedDate = currentDate.toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                // Générer des défis aléatoires en fonction de la phase
+                const challenges = generateDailyChallenges(phase.id, i);
+                
+                daysData.push({
+                    dayNumber: dayCounter,
+                    date: formattedDate,
+                    phase: phase.id,
+                    phaseName: phase.name,
+                    challenges: challenges,
+                    completed: false
+                });
+                
+                dayCounter++;
+            }
+        });
+        
+        // Fonction pour générer les défis journaliers
+        function generateDailyChallenges(phaseId, dayInPhase) {
+            const challenges = {
+                mental: [],
+                physique: [],
+                technique: [],
+                tactique: []
+            };
+            
+            // Phase 1: Fondations
+            if (phaseId === 1) {
+                challenges.mental.push(
+                    "Visualisation des objectifs (15 min)",
+                    "Journal de bord: 3 points d'amélioration",
+                    "Lecture sur la psychologie du sport"
+                );
+                
+                challenges.physique.push(
+                    "Footing endurance (45min à 70% FCM)",
+                    "Séance gainage (5x1min)",
+                    "Étirements actifs (15min)"
+                );
+                
+                challenges.technique.push(
+                    `${150 + Math.floor(dayInPhase/3)} tirs au but`,
+                    "Contrôle orienté (50x)",
+                    "Passes courtes précises (100x)"
+                );
+                
+                challenges.tactique.push(
+                    "Analyse vidéo de 2 attaquants pros",
+                    "Étude des déplacements sans ballon",
+                    "Mémoriser 5 schémas offensifs"
+                );
+            }
+            // Phase 2: Développement
+            else if (phaseId === 2) {
+                challenges.mental.push(
+                    "Visualisation de situations de match",
+                    "Exercice de concentration extrême",
+                    "Affirmations positives (10 min)"
+                );
+                
+                challenges.physique.push(
+                    "Sprints 30m (10x)",
+                    "Plyométrie (sauts, bonds)",
+                    "Circuit training complet (30min)"
+                );
+                
+                challenges.technique.push(
+                    "Finition 1 touche sous pression (50x)",
+                    "Frappes en angle fermé (30x)",
+                    "Reprises de volée (20x)"
+                );
+                
+                challenges.tactique.push(
+                    "Jeu en petit espace (4v4)",
+                    "Anticipation des passes adverses",
+                    "Simulation de contre-attaques"
+                );
+            }
+            // Phase 3: Stratégie
+            else if (phaseId === 3) {
+                challenges.mental.push(
+                    "Gestion du stress en match simulé",
+                    "Visualisation du leadership",
+                    "Rituel pré-match personnalisé"
+                );
+                
+                challenges.physique.push(
+                    "Sprints avec résistance (10x)",
+                    "Force maximale (séance salle)",
+                    "Endurance spécifique (30-30)"
+                );
+                
+                challenges.technique.push(
+                    "Frappe après dribble (30x)",
+                    "Centres et reprises (20x)",
+                    "Jeu dos au but (30x)"
+                );
+                
+                challenges.tactique.push(
+                    "Analyse d'équipes adverses",
+                    "Développement de schémas personnels",
+                    "Direction d'exercice tactique"
+                );
+            }
+            // Phase 4: Excellence
+            else if (phaseId === 4) {
+                challenges.mental.push(
+                    "Visualisation du tournoi",
+                    "Routine mentale de champion",
+                    "Confiance absolue (affirmations)"
+                );
+                
+                challenges.physique.push(
+                    "Activation nerveuse légère",
+                    "Sprints courts (10x)",
+                    "Mobilité optimale (20min)"
+                );
+                
+                challenges.technique.push(
+                    "Frappes de précision (30x)",
+                    "Contrôles millimétrés (20x)",
+                    "Dribbles efficaces (15x)"
+                );
+                
+                challenges.tactique.push(
+                    "Simulation de match tournoi",
+                    "Adaptation aux différents systèmes",
+                    "Gestion des derniers instants"
+                );
+            }
+            
+            return challenges;
+        }
+        
+        // Générer le calendrier
+        const calendar = document.getElementById('calendar');
+        const pagination = document.getElementById('pagination');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const daysPerPage = 6;
+        let currentPage = 1;
+        let currentPhase = 'all';
+        
+        // Calculer la progression
+        function calculateProgress() {
+            const completedDays = daysData.filter(day => day.completed).length;
+            const progress = Math.round((completedDays / daysData.length) * 100);
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `Progression: ${progress}%`;
+        }
+        
+        function renderCalendar() {
+            calendar.innerHTML = '';
+            
+            // Filtrer les jours par phase
+            const filteredDays = currentPhase === 'all' 
+                ? daysData 
+                : daysData.filter(day => day.phase == currentPhase);
+            
+            // Calculer les jours à afficher
+            const startIndex = (currentPage - 1) * daysPerPage;
+            const endIndex = startIndex + daysPerPage;
+            const daysToShow = filteredDays.slice(startIndex, endIndex);
+            
+            // Générer les cartes de jour
+            daysToShow.forEach(day => {
+                const dayCard = document.createElement('div');
+                dayCard.className = `day-card phase-${day.phase}`;
+                
+                // En-tête de jour
+                dayCard.innerHTML = `
+                    <div class="day-header">
+                        <div class="day-title">
+                            <span>Jour ${day.dayNumber}</span>
+                            <span class="phase-tag">${day.phaseName}</span>
+                        </div>
+                        <div class="day-date">${day.date}</div>
+                    </div>
+                    <div class="challenge-section">
+                        <h4><i class="fas fa-brain"></i> Défi Mental</h4>
+                        <ul class="challenge-list">
+                            ${day.challenges.mental.map(ch => `<li>${ch}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="challenge-section">
+                        <h4><i class="fas fa-running"></i> Défi Physique</h4>
+                        <ul class="challenge-list">
+                            ${day.challenges.physique.map(ch => `<li>${ch}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="challenge-section">
+                        <h4><i class="fas fa-futbol"></i> Défi Technique</h4>
+                        <ul class="challenge-list">
+                            ${day.challenges.technique.map(ch => `<li>${ch}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="challenge-section">
+                        <h4><i class="fas fa-chess"></i> Défi Tactique</h4>
+                        <ul class="challenge-list">
+                            ${day.challenges.tactique.map(ch => `<li>${ch}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="validation">
+                        <div class="validation-check ${day.completed ? 'checked' : ''}" data-day="${day.dayNumber}"></div>
+                    </div>
+                `;
+                
+                calendar.appendChild(dayCard);
+            });
+            
+            // Mettre à jour la pagination
+            updatePagination(filteredDays.length);
+        }
+        
+        function updatePagination(totalDays) {
+            pagination.innerHTML = '';
+            const pageCount = Math.ceil(totalDays / daysPerPage);
+            
+            // Bouton Précédent
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.addEventListener('click', () => {
+                    currentPage--;
+                    renderCalendar();
+                });
+                pagination.appendChild(prevBtn);
+            }
+            
+            // Boutons de page
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(pageCount, startPage + 4);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                if (i === currentPage) pageBtn.classList.add('active');
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderCalendar();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            // Bouton Suivant
+            if (currentPage < pageCount) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.addEventListener('click', () => {
+                    currentPage++;
+                    renderCalendar();
+                });
+                pagination.appendChild(nextBtn);
+            }
+        }
+        
+        // Gestion des boutons de filtre
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentPhase = this.dataset.phase;
+                currentPage = 1;
+                renderCalendar();
+            });
+        });
+        
+        // Gestion des cases à cocher
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('validation-check')) {
+                const dayNumber = parseInt(e.target.dataset.day);
+                const day = daysData.find(d => d.dayNumber === dayNumber);
+                
+                if (day) {
+                    day.completed = !day.completed;
+                    e.target.classList.toggle('checked');
+                    calculateProgress();
+                    
+                    // Animation de validation
+                    if (day.completed) {
+                        e.target.animate([
+                            { transform: 'scale(1)', opacity: 1 },
+                            { transform: 'scale(1.3)', opacity: 0.8 },
+                            { transform: 'scale(1)', opacity: 1 }
+                        ], {
+                            duration: 300,
+                            iterations: 1
+                        });
+                    }
+                }
+            }
+        });
+        
+        // Initialiser le calendrier
+        renderCalendar();
+        calculateProgress();
+    </script>
+</body>
+</html>
