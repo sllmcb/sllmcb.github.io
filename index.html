@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bibliothèque de Livrets de Coaching</title>
+    <title>Bibliothèque de Livrets - Style Solo Leveling</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #5d3fd3;
-            --accent: #00b4d8;
-            --dark: #0f172a;
-            --light: #f8fafc;
+            --dark-bg: #0a0e17;
+            --darker-bg: #070a12;
+            --card-bg: #111827;
+            --accent: #00a3ff;
+            --accent-hover: #00d9ff;
+            --text: #e0e7ff;
+            --text-secondary: #a0aec0;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --purple: #8b5cf6;
             --sport: #3fd35d;
             --development: #00b4d8;
+            --health: #ef4444;
         }
         
         * {
@@ -27,29 +31,39 @@
         }
         
         body {
-            background: linear-gradient(135deg, var(--dark), #1e293b);
-            color: var(--light);
-            line-height: 1.6;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--text);
+            min-height: 100vh;
             padding: 20px;
-            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 163, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%),
+                radial-gradient(circle at 90% 80%, rgba(239, 68, 68, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
+        /* Header avec effet anime */
         header {
             text-align: center;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
+            padding: 40px 20px;
+            margin-bottom: 30px;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 2;
+            border-bottom: 1px solid rgba(0, 163, 255, 0.2);
         }
         
         .glowing-circle {
@@ -57,8 +71,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             border-radius: 50%;
             background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
             opacity: 0.1;
@@ -68,35 +82,123 @@
         
         @keyframes pulse {
             0% { opacity: 0.1; }
-            100% { opacity: 0.2; }
+            100% { opacity: 0.3; }
         }
         
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent), var(--accent-hover));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
+            text-shadow: 0 0 15px rgba(0, 163, 255, 0.3);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
         }
         
         .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .calendar-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--dark-bg), rgba(0, 163, 255, 0.2));
+            border: 1px solid var(--accent);
+            border-radius: 30px;
+            padding: 12px 30px;
             font-size: 1.2rem;
-            color: #cbd5e1;
-            max-width: 800px;
-            margin: 0 auto;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(0, 163, 255, 0.2);
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            animation: glow 2s infinite alternate;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px rgba(0, 163, 255, 0.2);
+            }
+            to {
+                box-shadow: 0 0 25px rgba(0, 163, 255, 0.5);
+            }
+        }
+        
+        .calendar-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 163, 255, 0.5);
+        }
+        
+        .calendar-btn i {
+            margin-right: 8px;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-card {
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(0, 163, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 25px;
+            min-width: 180px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .intro-box {
-            background: rgba(93, 63, 211, 0.1);
-            border-left: 4px solid var(--secondary);
+            background: rgba(17, 24, 39, 0.7);
+            border-left: 4px solid var(--accent);
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 2rem;
             max-width: 800px;
             margin: 0 auto 2rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .intro-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
         }
         
         /* Navigation des catégories */
@@ -109,9 +211,9 @@
         }
         
         .category-btn {
-            background: rgba(93, 63, 211, 0.2);
-            color: #e2e8f0;
-            border: 1px solid rgba(93, 63, 211, 0.3);
+            background: rgba(17, 24, 39, 0.5);
+            color: var(--text);
+            border: 1px solid rgba(0, 163, 255, 0.2);
             border-radius: 30px;
             padding: 0.8rem 1.5rem;
             cursor: pointer;
@@ -120,38 +222,43 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         .category-btn:hover, .category-btn.active {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
         
         .category-btn.sport {
-            background: rgba(63, 211, 93, 0.2);
             border-color: rgba(63, 211, 93, 0.3);
         }
         
         .category-btn.sport:hover, .category-btn.sport.active {
-            background: var(--sport);
+            background: rgba(63, 211, 93, 0.2);
+            border-color: var(--sport);
+            box-shadow: 0 5px 20px rgba(63, 211, 93, 0.3);
         }
         
         .category-btn.development {
-            background: rgba(0, 180, 216, 0.2);
             border-color: rgba(0, 180, 216, 0.3);
         }
         
         .category-btn.development:hover, .category-btn.development.active {
-            background: var(--development);
+            background: rgba(0, 180, 216, 0.2);
+            border-color: var(--development);
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.3);
         }
         
         .category-btn.health {
-            background: rgba(239, 68, 68, 0.2);
             border-color: rgba(239, 68, 68, 0.3);
         }
         
         .category-btn.health:hover, .category-btn.health.active {
-            background: var(--danger);
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--danger);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
         }
         
         .category-btn i {
@@ -169,6 +276,9 @@
             color: var(--accent);
             position: relative;
             padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .section-title::after {
@@ -178,7 +288,7 @@
             left: 0;
             width: 60px;
             height: 3px;
-            background: var(--secondary);
+            background: var(--accent);
             border-radius: 3px;
         }
         
@@ -190,51 +300,61 @@
             background: var(--development);
         }
         
+        .section-title.health::after {
+            background: var(--health);
+        }
+        
         .booklets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 1.5rem;
         }
         
         .booklet-card {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(93, 63, 211, 0.3);
-            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 163, 255, 0.1);
+            border-radius: 15px;
             padding: 1.5rem;
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
         
         .booklet-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            border-color: rgba(0, 163, 255, 0.3);
         }
         
         .booklet-card.sport {
-            border-color: rgba(63, 211, 93, 0.3);
+            border-color: rgba(63, 211, 93, 0.1);
         }
         
         .booklet-card.sport:hover {
-            box-shadow: 0 10px 25px rgba(63, 211, 93, 0.2);
+            border-color: var(--sport);
+            box-shadow: 0 15px 30px rgba(63, 211, 93, 0.2);
         }
         
         .booklet-card.development {
-            border-color: rgba(0, 180, 216, 0.3);
+            border-color: rgba(0, 180, 216, 0.1);
         }
         
         .booklet-card.development:hover {
-            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.2);
+            border-color: var(--development);
+            box-shadow: 0 15px 30px rgba(0, 180, 216, 0.2);
         }
         
         .booklet-card.health {
-            border-color: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.1);
         }
         
         .booklet-card.health:hover {
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
+            border-color: var(--danger);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.2);
         }
         
         .booklet-category {
@@ -249,16 +369,19 @@
         .booklet-category.sport {
             background: rgba(63, 211, 93, 0.2);
             color: var(--sport);
+            border: 1px solid rgba(63, 211, 93, 0.3);
         }
         
         .booklet-category.development {
             background: rgba(0, 180, 216, 0.2);
             color: var(--development);
+            border: 1px solid rgba(0, 180, 216, 0.3);
         }
         
         .booklet-category.health {
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
         
         .booklet-title {
@@ -276,23 +399,27 @@
             color: var(--development);
         }
         
+        .booklet-card.health .booklet-title {
+            color: var(--danger);
+        }
+        
         .booklet-description {
             margin-bottom: 1.5rem;
-            color: #cbd5e1;
+            color: var(--text-secondary);
             flex-grow: 1;
         }
         
         .booklet-meta {
             display: flex;
             justify-content: space-between;
-            color: #94a3b8;
+            color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: auto;
         }
         
         .action-btn {
             display: inline-block;
-            background: var(--secondary);
+            background: var(--accent);
             color: white;
             padding: 0.8rem 1.5rem;
             border-radius: 6px;
@@ -301,11 +428,14 @@
             transition: all 0.3s ease;
             margin-top: 1rem;
             text-align: center;
+            border: none;
+            cursor: pointer;
         }
         
         .action-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(93, 63, 211, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 163, 255, 0.3);
+            background: var(--accent-hover);
         }
         
         .action-btn.sport {
@@ -345,7 +475,7 @@
             text-align: center;
             padding: 2rem 0;
             margin-top: 3rem;
-            color: #94a3b8;
+            color: var(--text-secondary);
             border-top: 1px solid rgba(148, 163, 184, 0.2);
         }
         
@@ -364,6 +494,7 @@
         
         .footer-links a:hover {
             color: white;
+            text-shadow: 0 0 10px rgba(0, 163, 255, 0.5);
         }
         
         @media (max-width: 768px) {
@@ -383,6 +514,16 @@
             .booklets-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-card {
+                width: 100%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
@@ -393,6 +534,28 @@
             <div class="header-content">
                 <h1>Bibliothèque de Livrets</h1>
                 <p class="subtitle">Ressources de coaching organisées par catégories</p>
+                <a href="deepseek_html_20250629_dbb7b4.html" class="calendar-btn">
+                    <i class="fas fa-calendar-alt"></i> Voir mon calendrier
+                </a>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="value">12</div>
+                    <div class="label">Livrets</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">3</div>
+                    <div class="label">Catégories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">28h</div>
+                    <div class="label">Temps d'apprentissage</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">7</div>
+                    <div class="label">Jours actifs</div>
+                </div>
             </div>
         </header>
         
@@ -420,7 +583,7 @@
         
         <!-- Section Sport -->
         <div class="booklets-section">
-            <h2 class="section-title sport">Livrets Sport</h2>
+            <h2 class="section-title sport"><i class="fas fa-running"></i> Livrets Sport</h2>
             
             <div class="booklets-grid">
                 <div class="booklet-card sport">
@@ -435,29 +598,29 @@
                         Voir le livret <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
-            <div class="booklet-card sport">
-  <div class="booklet-category sport">Sport - Transformation</div>
-  <h3 class="booklet-title">300 Jours Vers la Gloire</h3>
-  <p class="booklet-description">Programme complet de transformation pour Slimane Bouziani - Objectif Tournoi International 20 Mai 2026</p>
-  <div class="booklet-meta">
-    <span><i class="far fa-file"></i> 42 pages</span>
-    <span><i class="far fa-calendar-alt"></i> Juin 2024</span>
-  </div>
-  <a href="300_jours_vers_la_gloire.html" class="action-btn sport">
-    Voir le livret <i class="fas fa-arrow-right"></i>
-  </a>
-</div>    
+                
+                <div class="booklet-card sport">
+                    <div class="booklet-category sport">Sport - Transformation</div>
+                    <h3 class="booklet-title">300 Jours Vers la Gloire</h3>
+                    <p class="booklet-description">Programme complet de transformation pour Slimane Bouziani - Objectif Tournoi International 20 Mai 2026</p>
+                    <div class="booklet-meta">
+                        <span><i class="far fa-file"></i> 42 pages</span>
+                        <span><i class="far fa-calendar-alt"></i> Juin 2024</span>
+                    </div>
+                    <a href="300_jours_vers_la_gloire.html" class="action-btn sport">
+                        Voir le livret <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
         
-        <!-- Section Développement Personnel (vide) -->
-            <div class="booklets-section">
-            <h2 class="section-title development">Livrets Développement Personnel</h2>
+        <!-- Section Développement Personnel -->
+        <div class="booklets-section">
+            <h2 class="section-title development"><i class="fas fa-brain"></i> Livrets Développement Personnel</h2>
             
             <div class="booklets-grid">
                 <div class="booklet-card development">
                     <div class="booklet-category development">Développement</div>
-
                     <h3 class="booklet-title">The One Thing - Passer à l'Essentiel</h3>
                     <p class="booklet-description">Appliquez la méthode révolutionnaire pour vous concentrer sur l'essentiel et maximiser votre productivité.</p>
                     <div class="booklet-meta">
@@ -473,7 +636,7 @@
         
         <!-- Section Santé -->
         <div class="booklets-section">
-            <h2 class="section-title">Livrets Santé & Bien-être</h2>
+            <h2 class="section-title health"><i class="fas fa-heartbeat"></i> Livrets Santé & Bien-être</h2>
             
             <div class="booklets-grid">
                 <div class="booklet-card health">
@@ -539,6 +702,29 @@
                     filterBooklets(category);
                 });
             });
+            
+            // Effet sur les cartes au survol
+            const cards = document.querySelectorAll('.booklet-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px)';
+                    card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.6)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 10px 25px rgba(0,0,0,0.4)';
+                });
+            });
+            
+            // Animation du bouton calendrier
+            setInterval(() => {
+                const btn = document.querySelector('.calendar-btn');
+                btn.style.boxShadow = '0 0 25px rgba(0, 163, 255, 0.5)';
+                setTimeout(() => {
+                    btn.style.boxShadow = '0 0 15px rgba(0, 163, 255, 0.2)';
+                }, 1000);
+            }, 5000);
         });
     </script>
 </body>
