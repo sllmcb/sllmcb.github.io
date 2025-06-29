@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emploi du Temps - Side Dreams | Style Solo Leveling</title>
+    <title>Emploi du Temps - Side Dreams | Version Améliorée</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -25,6 +25,7 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --purple: #8b5cf6;
+            --transition: all 0.3s ease;
         }
 
         body {
@@ -91,7 +92,7 @@
             color: var(--accent);
             box-shadow: 0 0 15px rgba(0, 163, 255, 0.2);
             margin-top: 10px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             animation: glow 2s infinite alternate;
         }
 
@@ -160,12 +161,14 @@
             color: var(--text-secondary);
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 8px;
             min-width: 140px;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .nav-btn:hover, .nav-btn.active {
@@ -176,12 +179,35 @@
             transform: translateY(-3px);
         }
 
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 163, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .nav-btn:hover::after {
+            transform: translateX(100%);
+        }
+
         /* Main Content */
         .schedule-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 50px;
+            min-height: 600px;
+        }
+
+        .schedule-container.weekly-view {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
-            margin-bottom: 50px;
         }
 
         .day-column {
@@ -190,14 +216,24 @@
             overflow: hidden;
             border: 1px solid rgba(0, 163, 255, 0.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .day-column:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 163, 255, 0.3);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-column.active {
+            display: block;
+        }
+
+        .weekly-view .day-column {
+            display: block !important;
+            animation: none;
         }
 
         .day-header {
@@ -239,7 +275,10 @@
             border-radius: 10px;
             padding: 15px;
             border-left: 3px solid var(--accent);
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .time-slot:hover {
@@ -255,6 +294,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex: 1 0 100%;
         }
 
         .time-block::before {
@@ -273,12 +313,14 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1 0 100%;
         }
 
         .activity-desc {
             color: var(--text-secondary);
             font-size: 0.95rem;
             margin-bottom: 12px;
+            flex: 1 0 100%;
         }
 
         .activity-type {
@@ -350,6 +392,11 @@
             padding: 8px 15px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .legend-item:hover {
+            transform: scale(1.05);
         }
 
         .legend-color {
@@ -364,15 +411,75 @@
         .legend-color.learning { background: var(--warning); }
         .legend-color.rest { background: var(--purple); }
 
+        .day-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-around;
+        }
+
+        .summary-item {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            background: rgba(17, 24, 39, 0.7);
+            border: 1px solid rgba(0, 163, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px 25px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 10px;
+        }
+
+        .view-btn.active {
+            background: rgba(0, 163, 255, 0.2);
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 163, 255, 0.2);
+        }
+
+        .view-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
         /* Responsive */
         @media (max-width: 1100px) {
-            .schedule-container {
+            .schedule-container.weekly-view {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
-            .schedule-container {
+            .schedule-container.weekly-view {
                 grid-template-columns: 1fr;
             }
             
@@ -400,6 +507,22 @@
             .nav-btn {
                 min-width: 120px;
                 padding: 10px 15px;
+            }
+            
+            .day-summary {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .view-toggle {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .view-btn {
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
@@ -433,33 +556,42 @@
             </div>
         </div>
         
+        <div class="view-toggle">
+            <button class="view-btn active" id="daily-view-btn">
+                <i class="fas fa-calendar-day"></i> Vue Quotidienne
+            </button>
+            <button class="view-btn" id="weekly-view-btn">
+                <i class="fas fa-calendar-alt"></i> Vue Hebdomadaire
+            </button>
+        </div>
+        
         <div class="days-navigation">
-            <button class="nav-btn active">
+            <button class="nav-btn active" data-day="lundi">
                 <i class="fas fa-sun"></i> Lundi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="mardi">
                 <i class="fas fa-fire"></i> Mardi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="mercredi">
                 <i class="fas fa-dumbbell"></i> Mercredi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="jeudi">
                 <i class="fas fa-running"></i> Jeudi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="vendredi">
                 <i class="fas fa-video"></i> Vendredi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="samedi">
                 <i class="fas fa-gamepad"></i> Samedi
             </button>
-            <button class="nav-btn">
+            <button class="nav-btn" data-day="dimanche">
                 <i class="fas fa-sync-alt"></i> Dimanche
             </button>
         </div>
         
-        <div class="schedule-container">
+        <div class="schedule-container" id="schedule-container">
             <!-- Lundi -->
-            <div class="day-column">
+            <div class="day-column active" id="lundi">
                 <div class="day-header">
                     <h2><i class="fas fa-sun"></i> Lundi</h2>
                     <div class="day-total">16 activités</div>
@@ -552,10 +684,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">5h</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">4h 30m</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Mardi -->
-            <div class="day-column">
+            <div class="day-column" id="mardi">
                 <div class="day-header">
                     <h2><i class="fas fa-fire"></i> Mardi</h2>
                     <div class="day-total">13 activités</div>
@@ -638,10 +789,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">4h 30m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">2h 15m</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">4h 30m</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Mercredi -->
-            <div class="day-column">
+            <div class="day-column" id="mercredi">
                 <div class="day-header">
                     <h2><i class="fas fa-dumbbell"></i> Mercredi</h2>
                     <div class="day-total">12 activités</div>
@@ -724,10 +894,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">6h 30m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">2h</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">1h 30m</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Jeudi -->
-            <div class="day-column">
+            <div class="day-column" id="jeudi">
                 <div class="day-header">
                     <h2><i class="fas fa-running"></i> Jeudi</h2>
                     <div class="day-total">14 activités</div>
@@ -815,10 +1004,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">4h 45m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">2h 30m</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">4h</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h 15m</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Vendredi -->
-            <div class="day-column">
+            <div class="day-column" id="vendredi">
                 <div class="day-header">
                     <h2><i class="fas fa-video"></i> Vendredi</h2>
                     <div class="day-total">11 activités</div>
@@ -894,10 +1102,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">5h 45m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">0</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">5h 15m</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">3h 15m</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Samedi -->
-            <div class="day-column">
+            <div class="day-column" id="samedi">
                 <div class="day-header">
                     <h2><i class="fas fa-gamepad"></i> Samedi</h2>
                     <div class="day-total">11 activités</div>
@@ -973,10 +1200,29 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">3h 30m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">6h</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">1h 45m</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">4h</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
             
             <!-- Dimanche -->
-            <div class="day-column">
+            <div class="day-column" id="dimanche">
                 <div class="day-header">
                     <h2><i class="fas fa-sync-alt"></i> Dimanche</h2>
                     <div class="day-total">11 activités</div>
@@ -1052,6 +1298,25 @@
                         <div class="activity-title">Coucher</div>
                     </div>
                 </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">5h 30m</div>
+                        <div class="summary-label">Sport</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">4h 15m</div>
+                        <div class="summary-label">Projet</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">0</div>
+                        <div class="summary-label">Création</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">2h</div>
+                        <div class="summary-label">Apprentissage</div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1085,21 +1350,83 @@
     <script>
         // Navigation system
         const navButtons = document.querySelectorAll('.nav-btn');
+        const dayColumns = document.querySelectorAll('.day-column');
+        const scheduleContainer = document.getElementById('schedule-container');
+        const dailyViewBtn = document.getElementById('daily-view-btn');
+        const weeklyViewBtn = document.getElementById('weekly-view-btn');
         
+        // Fonction pour activer un jour spécifique
+        function activateDay(dayId) {
+            // Masquer toutes les colonnes de jour
+            dayColumns.forEach(column => {
+                column.classList.remove('active');
+            });
+            
+            // Afficher la colonne du jour sélectionné
+            document.getElementById(dayId).classList.add('active');
+            
+            // Supprimer la vue hebdomadaire si elle est active
+            scheduleContainer.classList.remove('weekly-view');
+            
+            // Mettre à jour les boutons de vue
+            dailyViewBtn.classList.add('active');
+            weeklyViewBtn.classList.remove('active');
+            
+            // Mettre à jour les boutons de navigation
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('data-day') === dayId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Scroll en haut de la page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Initialisation - activer Lundi par défaut
+        activateDay('lundi');
+        
+        // Navigation entre les jours
         navButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // Remove active class from all buttons
-                navButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                // Smooth scroll to top
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                const targetDay = this.getAttribute('data-day');
+                activateDay(targetDay);
             });
+        });
+        
+        // Activation de la vue hebdomadaire
+        weeklyViewBtn.addEventListener('click', function() {
+            // Activer la vue hebdomadaire
+            scheduleContainer.classList.add('weekly-view');
+            
+            // Afficher toutes les colonnes
+            dayColumns.forEach(column => {
+                column.classList.add('active');
+            });
+            
+            // Mettre à jour les boutons de vue
+            dailyViewBtn.classList.remove('active');
+            weeklyViewBtn.classList.add('active');
+            
+            // Désactiver les boutons de navigation
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Scroll en haut de la page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Activation de la vue quotidienne
+        dailyViewBtn.addEventListener('click', function() {
+            // Revenir au jour actuellement actif
+            const activeDay = document.querySelector('.nav-btn.active');
+            if(activeDay) {
+                activateDay(activeDay.getAttribute('data-day'));
+            } else {
+                activateDay('lundi');
+            }
         });
         
         // Highlight Side Dreams badge
