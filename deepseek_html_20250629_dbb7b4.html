@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emploi du Temps Footballeur Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #fbbc05;
+            --accent: #34a853;
+            --danger: #ea4335;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --transition: all 0.3s ease;
+            
+            /* Mode clair par défaut */
+            --bg-color: #f5f7fa;
+            --card-bg: white;
+            --text-color: #202124;
+            --border-color: #ddd;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .goal-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 30px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+            margin-top: 10px;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            min-width: 250px;
+            border: 1px solid var(--border-color);
+        }
+
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .btn.active {
+            background: var(--accent);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 25px;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .schedule-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .day-column {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            opacity: 0.7;
+        }
+
+        .day-column.active {
+            opacity: 1;
+            border: 2px solid var(--accent);
+            transform: scale(1.02);
+        }
+
+        .day-column.match-day {
+            border: 2px solid var(--accent);
+            box-shadow: 0 10px 25px rgba(52, 168, 83, 0.2);
+        }
+
+        .day-header {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-total {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .activities-list {
+            padding: 20px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .time-slot {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .time-slot:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .time-slot:hover .time-block,
+        .time-slot:hover .activity-desc {
+            color: white;
+        }
+
+        .time-block {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 100%;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 0 100%;
+        }
+
+        .activity-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            flex: 1 0 100%;
+        }
+
+        .activity-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .type-football {
+            background: rgba(52, 168, 83, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .type-study {
+            background: rgba(26, 115, 232, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .type-fitness {
+            background: rgba(251, 188, 5, 0.15);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+
+        .type-dev {
+            background: rgba(234, 67, 53, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .type-rest {
+            background: rgba(95, 99, 104, 0.15);
+            color: var(--gray);
+            border: 1px solid var(--gray);
+        }
+
+        .type-formation {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+            border: 1px solid #9b59b6;
+        }
+
+        .day-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-around;
+        }
+
+        .summary-item {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .summary-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .legend {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            max-width: 800px;
+            margin: 40px auto;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .legend h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: var(--bg-color);
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        .legend-color.football { background: var(--accent); }
+        .legend-color.study { background: var(--primary); }
+        .legend-color.fitness { background: var(--secondary); }
+        .legend-color.dev { background: var(--danger); }
+        .legend-color.rest { background: var(--gray); }
+        .legend-color.formation { background: #9b59b6; }
+
+        .match-notice {
+            background: #e6f4ea;
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .current-day-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 1100px) {
+            .schedule-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .schedule-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-group {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .theme-toggle {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <h1>PROGRAMME D'ENTRAÎNEMENT FOOTBALLEUR PRO</h1>
+            <div class="subtitle">Optimisé pour la performance sportive et la réussite scolaire</div>
+            <div class="goal-badge">
+                <i class="fas fa-trophy"></i> OBJECTIF : FOOTBALLEUR PROFESSIONNEL DANS 3 ANS
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="value">14h</div>
+                    <div class="label">Football / Semaine</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">8h</div>
+                    <div class="label">Prépa Physique / Sem</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">10h</div>
+                    <div class="label">Étude / Sem</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">5h</div>
+                    <div class="label">Formations / Sem</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="current-day-indicator" id="current-day">
+            <!-- Indicateur du jour actuel -->
+        </div>
+        
+        <div class="view-toggle">
+            <button class="btn active" id="daily-view-btn">
+                <i class="fas fa-calendar-day"></i> Vue Quotidienne
+            </button>
+            <button class="btn" id="weekly-view-btn">
+                <i class="fas fa-calendar-alt"></i> Vue Hebdomadaire
+            </button>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3><i class="fas fa-calendar-week"></i> Sélection de la semaine</h3>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn active" id="week1-btn">Semaine 1</button>
+                    <button class="btn" id="week2-btn">Semaine 2</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3><i class="fas fa-futbol"></i> Match du weekend</h3>
+                <select id="match-select">
+                    <option value="none">Aucun match</option>
+                    <option value="saturday">Match le Samedi</option>
+                    <option value="sunday">Match le Dimanche</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <h3><i class="fas fa-sync-alt"></i> Actions</h3>
+                <button class="btn" id="reset-btn">
+                    <i class="fas fa-redo"></i> Réinitialiser
+                </button>
+            </div>
+        </div>
+        
+        <div class="schedule-container" id="schedule-container">
+            <!-- Les colonnes des jours seront générées par JavaScript -->
+        </div>
+        
+        <div class="legend">
+            <h3>LÉGENDE DES ACTIVITÉS</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color football"></div>
+                    <span>Football (Entraînement/Match)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color study"></div>
+                    <span>Étude & Devoirs</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color fitness"></div>
+                    <span>Préparation Physique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color dev"></div>
+                    <span>Développement Personnel</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color formation"></div>
+                    <span>Formations & Compétences</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color rest"></div>
+                    <span>Repos & Récupération</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de base pour les emplois du temps
+        const scheduleData = {
+            week1: {
+                monday: {
+                    courses: [
+                        { time: "09h10 – 10h05", subject: "Anglais" },
+                        { time: "10h20 – 12h10", subject: "Physique-chimie" },
+                        { time: "12h10 – 13h10", subject: "Français" },
+                        { time: "14h05 – 15h00", subject: "Français" },
+                        { time: "15h00 – 15h55", subject: "Allemand" },
+                        { time: "16h10 – 18h00", subject: "Histoire-géographie" }
+                    ]
+                },
+                tuesday: {
+                    courses: [
+                        { time: "10h20 – 12h10", subject: "Mathématiques" },
+                        { time: "13h10 – 16h05", subject: "NSI" },
+                        { time: "16h10 – 17h00", subject: "Libre" },
+                        { time: "17h00 – 18h00", subject: "Histoire-géographie" }
+                    ]
+                },
+                wednesday: {
+                    courses: [
+                        { time: "08h15 – 09h10", subject: "Anglais" },
+                        { time: "09h10 – 10h05", subject: "Histoire-géographie" },
+                        { time: "10h20 – 12h10", subject: "EPS" }
+                    ]
+                },
+                thursday: {
+                    courses: [
+                        { time: "10h20 – 11h15", subject: "Allemand" },
+                        { time: "11h15 – 12h10", subject: "Français" },
+                        { time: "12h10 – 13h10", subject: "Mathématiques" },
+                        { time: "15h00 – 15h55", subject: "Enseignement scientifique" },
+                        { time: "16h10 – 17h00", subject: "NSI" }
+                    ]
+                },
+                friday: {
+                    courses: [
+                        { time: "08h15 – 10h05", subject: "Physique-chimie" },
+                        { time: "10h20 – 12h10", subject: "Libre" },
+                        { time: "12h10 – 13h10", subject: "Anglais" },
+                        { time: "14h05 – 15h55", subject: "Mathématiques" },
+                        { time: "16h10 – 18h00", subject: "Français" }
+                    ]
+                }
+            },
+            week2: {
+                monday: {
+                    courses: [
+                        { time: "09h10 – 10h05", subject: "Anglais" },
+                        { time: "10h20 – 12h10", subject: "Physique-chimie" },
+                        { time: "12h10 – 13h10", subject: "Français" },
+                        { time: "14h05 – 15h00", subject: "Français" },
+                        { time: "15h00 – 15h55", subject: "Allemand" },
+                        { time: "16h10 – 18h00", subject: "Enseignement scientifique" }
+                    ]
+                },
+                tuesday: {
+                    courses: [
+                        { time: "08h15 – 10h05", subject: "Enseignement moral et civique" },
+                        { time: "10h20 – 12h10", subject: "Mathématiques" },
+                        { time: "14h05 – 16h10", subject: "NSI" },
+                        { time: "16h10 – 17h05", subject: "Libre" },
+                        { time: "17h05 – 18h00", subject: "Histoire-géographie" }
+                    ]
+                },
+                wednesday: {
+                    courses: [
+                        { time: "08h15 – 09h10", subject: "Anglais" },
+                        { time: "09h10 – 10h05", subject: "Histoire-géographie" },
+                        { time: "10h20 – 12h10", subject: "EPS" }
+                    ]
+                },
+                thursday: {
+                    courses: [
+                        { time: "10h20 – 11h15", subject: "Allemand" },
+                        { time: "11h15 – 12h10", subject: "Français" },
+                        { time: "16h10 – 18h00", subject: "NSI" }
+                    ]
+                },
+                friday: {
+                    courses: [
+                        { time: "08h15 – 10h05", subject: "Physique-chimie" },
+                        { time: "10h20 – 12h10", subject: "Libre" },
+                        { time: "12h10 – 13h10", subject: "Français" },
+                        { time: "14h05 – 15h55", subject: "Mathématiques" },
+                        { time: "16h10 – 17h05", subject: "Français" },
+                        { time: "17h05 – 18h00", subject: "Enseignement scientifique" }
+                    ]
+                }
+            }
+        };
+
+        // Activités supplémentaires (hors cours) - REVUES
+        const additionalActivities = {
+            monday: [
+                { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
+                { time: "06h00 - 07h00", title: "Étude (Révisions)", type: "study", desc: "Révision des cours de la veille" },
+                { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Renforcement musculaire" },
+                { time: "13h10 - 14h05", title: "Pause déjeuner", type: "rest" },
+                { time: "18h00 - 19h00", title: "Football technique", type: "football", desc: "Travail technique individuel" },
+                { time: "18h30 - 20h30", title: "Entraînement football", type: "football", desc: "Entraînement obligatoire" },
+                { time: "20h30 - 21h30", title: "Retour & Dîner", type: "rest" },
+                { time: "21h30 - 22h30", title: "Formation en ligne", type: "formation", desc: "Développement de compétences" },
+                { time: "22h30 - 23h00", title: "Lecture (30 pages)", type: "study", desc: "Lecture annotée" }
+            ],
+            tuesday: [
+                { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
+                { time: "06h00 - 07h00", title: "Étude (Devoirs)", type: "study", desc: "Travail sur les devoirs" },
+                { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Cardio léger" },
+                { time: "12h10 - 13h10", title: "Pause déjeuner", type: "rest" },
+                { time: "18h00 - 19h30", title: "Football technique", type: "football", desc: "Travail technique individuel" },
+                { time: "19h30 - 20h30", title: "Anglais (TOEIC)", type: "study", desc: "Préparation au TOEIC" },
+                { time: "20h30 - 21h30", title: "Formation développement", type: "formation", desc: "Apprentissage programmation" },
+                { time: "21h30 - 22h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            wednesday: [
+                { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
+                { time: "06h00 - 07h00", title: "Étude (Révisions)", type: "study" },
+                { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Street workout" },
+                { time: "12h10 - 13h10", title: "Pause déjeuner", type: "rest" },
+                { time: "13h10 - 15h10", title: "Salle de sport", type: "fitness", desc: "Programme complet" },
+                { time: "15h10 - 17h10", title: "Football technique", type: "football", desc: "Travail technique intensif" },
+                { time: "17h10 - 18h10", title: "Étude (Devoirs)", type: "study" },
+                { time: "18h10 - 19h10", title: "Formation animation", type: "formation", desc: "Apprentissage Blender/Animation" },
+                { time: "19h10 - 20h10", title: "Football tactique", type: "football", desc: "Analyse tactique" },
+                { time: "20h10 - 21h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            thursday: [
+                { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
+                { time: "06h00 - 07h00", title: "Étude (Révisions)", type: "study" },
+                { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Renforcement" },
+                { time: "13h10 - 15h00", title: "Pause déjeuner", type: "rest" },
+                { time: "17h00 - 18h30", title: "Football technique", type: "football", desc: "Travail technique" },
+                { time: "19h00 - 20h30", title: "Entraînement football", type: "football", desc: "Entraînement obligatoire" },
+                { time: "20h30 - 21h30", title: "Retour & Dîner", type: "rest" },
+                { time: "21h30 - 22h30", title: "Formation en ligne", type: "formation", desc: "Développement de compétences" },
+                { time: "22h30 - 23h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            friday: [
+                { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
+                { time: "06h00 - 07h00", title: "Étude (Révisions)", type: "study" },
+                { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Cardio" },
+                { time: "13h10 - 14h05", title: "Pause déjeuner", type: "rest" },
+                { time: "18h00 - 19h30", title: "Football technique", type: "football", desc: "Travail technique" },
+                { time: "19h30 - 20h30", title: "Anglais (TOEIC)", type: "study", desc: "Préparation au TOEIC" },
+                { time: "20h30 - 21h30", title: "Formation développement", type: "formation" },
+                { time: "21h30 - 22h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            saturday: [
+                { time: "07h00 - 08h00", title: "Réveil & Petit-déjeuner", type: "rest" },
+                { time: "08h00 - 10h00", title: "Étude intensive", type: "study", desc: "Révisions de la semaine" },
+                { time: "10h00 - 12h00", title: "Football technique", type: "football", desc: "Travail individuel" },
+                { time: "12h00 - 13h30", title: "Pause déjeuner", type: "rest" },
+                { time: "13h30 - 15h30", title: "Préparation physique", type: "fitness", desc: "Renforcement complet" },
+                { time: "15h30 - 17h30", title: "Formation développement", type: "formation", desc: "Animation/Programmation" },
+                { time: "17h30 - 19h00", title: "Football tactique", type: "football", desc: "Analyse de match" },
+                { time: "19h00 - 20h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            saturdayMatch: [
+                { time: "07h00 - 08h00", title: "Réveil & Petit-déjeuner", type: "rest" },
+                { time: "08h00 - 10h00", title: "Étude intensive", type: "study", desc: "Révisions de la semaine" },
+                { time: "10h00 - 12h00", title: "Préparation match", type: "football", desc: "Échauffement et préparation" },
+                { time: "12h00 - 13h00", title: "Repas pré-match", type: "rest" },
+                { time: "13h00 - 16h00", title: "MATCH + Récupération", type: "football", desc: "Match officiel" },
+                { time: "16h00 - 17h00", title: "Retour et récupération", type: "rest" },
+                { time: "17h00 - 18h00", title: "Étude légère", type: "study", desc: "Révisions légères" },
+                { time: "18h00 - 19h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            sunday: [
+                { time: "08h00 - 09h00", title: "Réveil & Petit-déjeuner", type: "rest" },
+                { time: "09h00 - 11h00", title: "Football technique", type: "football", desc: "Travail individuel" },
+                { time: "11h00 - 12h30", title: "Formation en ligne", type: "formation", desc: "Développement de compétences" },
+                { time: "12h30 - 14h00", title: "Pause déjeuner", type: "rest" },
+                { time: "14h00 - 16h00", title: "Préparation physique", type: "fitness", desc: "Cardio et stretching" },
+                { time: "16h00 - 18h00", title: "Formation développement", type: "formation", desc: "Projets personnels" },
+                { time: "18h00 - 19h00", title: "Bilan de la semaine", type: "study", desc: "Évaluation des progrès" },
+                { time: "19h00 - 20h00", title: "Lecture (30 pages)", type: "study" }
+            ],
+            sundayMatch: [
+                { time: "07h00 - 08h00", title: "Réveil & Petit-déjeuner", type: "rest" },
+                { time: "08h00 - 10h00", title: "Préparation match", type: "football", desc: "Échauffement et préparation" },
+                { time: "10h00 - 11h00", title: "Repas pré-match", type: "rest" },
+                { time: "11h00 - 14h00", title: "MATCH + Récupération", type: "football", desc: "Match officiel" },
+                { time: "14h00 - 15h00", title: "Retour et déjeuner", type: "rest" },
+                { time: "15h00 - 17h00", title: "Repos actif", type: "rest", desc: "Marche légère ou étirements" },
+                { time: "17h00 - 19h00", title: "Formation en ligne", type: "formation", desc: "Développement de compétences" },
+                { time: "19h00 - 20h00", title: "Lecture (30 pages)", type: "study" }
+            ]
+        };
+
+        // Fonction pour générer l'emploi du temps
+        function generateSchedule(week, matchDay, viewMode = 'weekly', currentDay = null) {
+            const scheduleContainer = document.getElementById('schedule-container');
+            scheduleContainer.innerHTML = '';
+            
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const dayNames = {
+                monday: { fr: "Lundi", icon: "fa-calendar-day" },
+                tuesday: { fr: "Mardi", icon: "fa-dumbbell" },
+                wednesday: { fr: "Mercredi", icon: "fa-running" },
+                thursday: { fr: "Jeudi", icon: "fa-futbol" },
+                friday: { fr: "Vendredi", icon: "fa-graduation-cap" },
+                saturday: { fr: "Samedi", icon: "fa-gamepad" },
+                sunday: { fr: "Dimanche", icon: "fa-sync-alt" }
+            };
+            
+            days.forEach(day => {
+                const dayColumn = document.createElement('div');
+                dayColumn.className = 'day-column';
+                dayColumn.id = day;
+                
+                // Vérifier si c'est un jour de match
+                if ((matchDay === 'saturday' && day === 'saturday') || 
+                    (matchDay === 'sunday' && day === 'sunday')) {
+                    dayColumn.classList.add('match-day');
+                }
+                
+                // Mettre en évidence le jour actuel
+                if (viewMode === 'daily' && day === currentDay) {
+                    dayColumn.classList.add('active');
+                }
+                
+                const dayName = dayNames[day];
+                dayColumn.innerHTML = `
+                    <div class="day-header">
+                        <h2><i class="fas ${dayName.icon}"></i> ${dayName.fr}</h2>
+                        <div class="day-total">${getActivityCount(day, week, matchDay)} activités</div>
+                    </div>
+                    <div class="activities-list">
+                        ${generateActivitiesHTML(day, week, matchDay)}
+                    </div>
+                    <div class="day-summary">
+                        ${getDaySummaryHTML(day, week, matchDay)}
+                    </div>
+                `;
+                
+                // Ajouter une notice si c'est un jour de match
+                if ((matchDay === 'saturday' && day === 'saturday') || 
+                    (matchDay === 'sunday' && day === 'sunday')) {
+                    const matchNotice = document.createElement('div');
+                    matchNotice.className = 'match-notice';
+                    matchNotice.innerHTML = `
+                        <i class="fas fa-futbol"></i>
+                        <span>Jour de match - Programme adapté pour performance maximale</span>
+                    `;
+                    dayColumn.querySelector('.activities-list').insertBefore(matchNotice, dayColumn.querySelector('.activities-list').firstChild);
+                }
+                
+                // Afficher ou masquer selon le mode de vue
+                if (viewMode === 'daily' && day !== currentDay) {
+                    dayColumn.style.display = 'none';
+                } else {
+                    dayColumn.style.display = 'block';
+                }
+                
+                scheduleContainer.appendChild(dayColumn);
+            });
+        }
+        
+        // Fonction pour générer le HTML des activités
+        function generateActivitiesHTML(day, week, matchDay) {
+            const activities = getDayActivities(day, week, matchDay);
+            let html = '';
+            
+            activities.forEach(activity => {
+                html += `
+                    <div class="time-slot">
+                        <div class="time-block">${activity.time}</div>
+                        <div class="activity-title">${activity.title}</div>
+                        ${activity.desc ? `<div class="activity-desc">${activity.desc}</div>` : ''}
+                        <div class="activity-type type-${activity.type}">${getTypeLabel(activity.type)}</div>
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+        
+        // Fonction pour obtenir le résumé du jour en HTML
+        function getDaySummaryHTML(day, week, matchDay) {
+            const activities = getDayActivities(day, week, matchDay);
+            const totals = calculateDayTotals(activities);
+            
+            let html = '';
+            for (const type in totals) {
+                if (totals[type] > 0) {
+                    const hours = Math.floor(totals[type]);
+                    const minutes = Math.round((totals[type] - hours) * 60);
+                    const timeStr = minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+                    
+                    html += `
+                        <div class="summary-item">
+                            <div class="summary-value">${timeStr}</div>
+                            <div class="summary-label">${getTypeLabel(type)}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            return html;
+        }
+        
+        // Fonction utilitaire pour obtenir le nombre d'activités
+        function getActivityCount(day, week, matchDay) {
+            const activities = getDayActivities(day, week, matchDay);
+            return activities.length;
+        }
+        
+        // Fonction pour obtenir les activités d'un jour
+        function getDayActivities(day, week, matchDay) {
+            let activities = [];
+            
+            // Ajouter les cours pour les jours de semaine
+            if (day !== 'saturday' && day !== 'sunday') {
+                const courses = scheduleData[week][day]?.courses || [];
+                courses.forEach(course => {
+                    activities.push({
+                        time: course.time,
+                        title: course.subject,
+                        type: "study",
+                        desc: "Cours scolaire"
+                    });
+                });
+            }
+            
+            // Ajouter les activités supplémentaires
+            let additional = [];
+            
+            if (day === 'saturday') {
+                if (matchDay === 'saturday') {
+                    additional = additionalActivities.saturdayMatch;
+                } else {
+                    additional = additionalActivities.saturday;
+                }
+            } else if (day === 'sunday') {
+                if (matchDay === 'sunday') {
+                    additional = additionalActivities.sundayMatch;
+                } else {
+                    additional = additionalActivities.sunday;
+                }
+            } else {
+                additional = additionalActivities[day] || [];
+            }
+            
+            activities = [...activities, ...additional];
+            
+            // Trier les activités par heure
+            activities.sort((a, b) => {
+                const timeA = convertTimeToMinutes(a.time.split(' - ')[0]);
+                const timeB = convertTimeToMinutes(b.time.split(' - ')[0]);
+                return timeA - timeB;
+            });
+            
+            return activities;
+        }
+        
+        // Fonction pour convertir l'heure en minutes pour le tri
+        function convertTimeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.replace('h', ':').split(':').map(Number);
+            return hours * 60 + (minutes || 0);
+        }
+        
+        // Fonction pour obtenir le libellé du type d'activité
+        function getTypeLabel(type) {
+            const labels = {
+                "football": "Football",
+                "study": "Étude",
+                "fitness": "Prépa Physique",
+                "dev": "Développement",
+                "rest": "Repos",
+                "formation": "Formation"
+            };
+            return labels[type] || type;
+        }
+        
+        // Fonction pour calculer les totaux du jour
+        function calculateDayTotals(activities) {
+            const totals = {
+                football: 0,
+                study: 0,
+                fitness: 0,
+                dev: 0,
+                rest: 0,
+                formation: 0
+            };
+            
+            activities.forEach(activity => {
+                const timeRange = activity.time.split(' - ');
+                if (timeRange.length === 2) {
+                    const start = convertTimeToMinutes(timeRange[0]);
+                    const end = convertTimeToMinutes(timeRange[1]);
+                    const duration = (end - start) / 60; // en heures
+                    
+                    if (totals.hasOwnProperty(activity.type)) {
+                        totals[activity.type] += duration;
+                    }
+                }
+            });
+            
+            return totals;
+        }
+        
+        // Fonction pour obtenir le jour actuel
+        function getCurrentDay() {
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            return days[new Date().getDay()];
+        }
+        
+        // Fonction pour mettre à jour l'indicateur du jour actuel
+        function updateCurrentDayIndicator(day, week) {
+            const dayNames = {
+                monday: "Lundi",
+                tuesday: "Mardi", 
+                wednesday: "Mercredi",
+                thursday: "Jeudi",
+                friday: "Vendredi",
+                saturday: "Samedi",
+                sunday: "Dimanche"
+            };
+            
+            const weekNames = {
+                week1: "Semaine 1",
+                week2: "Semaine 2"
+            };
+            
+            document.getElementById('current-day').textContent = 
+                `Aujourd'hui : ${dayNames[day]} - ${weekNames[week]}`;
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentWeek = 'week1';
+            let currentMatchDay = 'none';
+            let currentViewMode = 'weekly';
+            let currentDay = getCurrentDay();
+            
+            // Mettre à jour l'indicateur du jour actuel
+            updateCurrentDayIndicator(currentDay, currentWeek);
+            
+            // Générer l'emploi du temps initial
+            generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            
+            // Gestion du thème sombre/clair
+            document.getElementById('theme-toggle').addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                
+                // Regénérer l'emploi du temps pour appliquer les nouvelles couleurs
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            // Gestion des boutons de semaine
+            document.getElementById('week1-btn').addEventListener('click', function() {
+                document.getElementById('week1-btn').classList.add('active');
+                document.getElementById('week2-btn').classList.remove('active');
+                currentWeek = 'week1';
+                updateCurrentDayIndicator(currentDay, currentWeek);
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            document.getElementById('week2-btn').addEventListener('click', function() {
+                document.getElementById('week2-btn').classList.add('active');
+                document.getElementById('week1-btn').classList.remove('active');
+                currentWeek = 'week2';
+                updateCurrentDayIndicator(currentDay, currentWeek);
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            // Gestion du sélecteur de match
+            document.getElementById('match-select').addEventListener('change', function() {
+                currentMatchDay = this.value;
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            // Gestion du bouton de réinitialisation
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('week1-btn').classList.add('active');
+                document.getElementById('week2-btn').classList.remove('active');
+                document.getElementById('match-select').value = 'none';
+                document.getElementById('daily-view-btn').classList.remove('active');
+                document.getElementById('weekly-view-btn').classList.add('active');
+                
+                currentWeek = 'week1';
+                currentMatchDay = 'none';
+                currentViewMode = 'weekly';
+                currentDay = getCurrentDay();
+                
+                updateCurrentDayIndicator(currentDay, currentWeek);
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            // Gestion des boutons de vue
+            document.getElementById('daily-view-btn').addEventListener('click', function() {
+                document.getElementById('daily-view-btn').classList.add('active');
+                document.getElementById('weekly-view-btn').classList.remove('active');
+                currentViewMode = 'daily';
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            document.getElementById('weekly-view-btn').addEventListener('click', function() {
+                document.getElementById('weekly-view-btn').classList.add('active');
+                document.getElementById('daily-view-btn').classList.remove('active');
+                currentViewMode = 'weekly';
+                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            });
+            
+            // Navigation entre les jours (pour la vue quotidienne)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.day-column') && currentViewMode === 'weekly') {
+                    const dayColumn = e.target.closest('.day-column');
+                    const dayId = dayColumn.id;
+                    
+                    // Basculer en vue quotidienne avec le jour sélectionné
+                    document.getElementById('daily-view-btn').classList.add('active');
+                    document.getElementById('weekly-view-btn').classList.remove('active');
+                    currentViewMode = 'daily';
+                    currentDay = dayId;
+                    
+                    updateCurrentDayIndicator(currentDay, currentWeek);
+                    generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+                    
+                    // Scroll vers le haut
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
