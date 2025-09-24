@@ -24,20 +24,59 @@
             --gray: #5f6368;
             --transition: all 0.3s ease;
             
-            /* Mode clair par défaut */
-            --bg-color: #f5f7fa;
-            --card-bg: white;
-            --text-color: #202124;
-            --border-color: #ddd;
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        body.dark-mode {
+            /* Mode sombre par défaut */
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --text-color: #e0e0e0;
             --border-color: #333;
             --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --header-gradient: linear-gradient(90deg, #0d47a1, #002171);
+        }
+
+        /* Thème Clair */
+        body.light-mode {
+            --bg-color: #f5f7fa;
+            --card-bg: white;
+            --text-color: #202124;
+            --border-color: #ddd;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --header-gradient: linear-gradient(90deg, #1a73e8, #0d47a1);
+        }
+
+        /* Thème Noir et Blanc Clair */
+        body.bw-light-mode {
+            --primary: #000000;
+            --primary-dark: #333333;
+            --secondary: #666666;
+            --accent: #000000;
+            --danger: #333333;
+            --light: #f5f5f5;
+            --dark: #000000;
+            --gray: #666666;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #000000;
+            --border-color: #000000;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --header-gradient: linear-gradient(90deg, #000000, #333333);
+        }
+
+        /* Thème Noir et Blanc Sombre - CORRIGÉ */
+        body.bw-dark-mode {
+            --primary: #ffffff;
+            --primary-dark: #cccccc;
+            --secondary: #999999;
+            --accent: #ffffff;
+            --danger: #cccccc;
+            --light: #1a1a1a;
+            --dark: #ffffff;
+            --gray: #aaaaaa; /* Amélioré pour meilleur contraste */
+            --bg-color: #000000;
+            --card-bg: #222222; /* Plus clair pour meilleur contraste */
+            --text-color: #ffffff;
+            --border-color: #555555; /* Plus clair pour meilleure visibilité */
+            --shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            --header-gradient: linear-gradient(90deg, #ffffff, #cccccc);
         }
 
         body {
@@ -80,7 +119,7 @@
 
         .goal-badge {
             display: inline-block;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            background: var(--header-gradient);
             border-radius: 30px;
             padding: 12px 25px;
             font-size: 1.1rem;
@@ -104,11 +143,58 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
+            z-index: 100;
         }
 
         .theme-toggle:hover {
             transform: rotate(15deg);
         }
+
+        .theme-selector {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            width: 200px;
+            display: none;
+            z-index: 99;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .theme-selector.show {
+            display: flex;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-option:hover {
+            background: var(--bg-color);
+        }
+
+        .theme-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+        }
+
+        .theme-dark .theme-color { background: linear-gradient(45deg, #121212, #1a73e8); }
+        .theme-light .theme-color { background: linear-gradient(45deg, #1a73e8, #fbbc05); }
+        .theme-bw-light .theme-color { background: linear-gradient(45deg, #000000, #ffffff); }
+        .theme-bw-dark .theme-color { background: linear-gradient(45deg, #ffffff, #000000); }
 
         .controls {
             display: flex;
@@ -228,7 +314,7 @@
         }
 
         .day-header {
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            background: var(--header-gradient);
             padding: 20px;
             color: white;
             display: flex;
@@ -483,14 +569,40 @@
                 right: 0;
                 margin: 10px auto;
             }
+            
+            .theme-selector {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
     <div class="container">
         <div class="header">
             <div class="theme-toggle" id="theme-toggle">
-                <i class="fas fa-moon"></i>
+                <i class="fas fa-palette"></i>
+            </div>
+            <div class="theme-selector" id="theme-selector">
+                <div class="theme-option theme-dark" data-theme="dark">
+                    <div class="theme-color"></div>
+                    <span>Sombre Normal</span>
+                </div>
+                <div class="theme-option theme-light" data-theme="light">
+                    <div class="theme-color"></div>
+                    <span>Clair Normal</span>
+                </div>
+                <div class="theme-option theme-bw-light" data-theme="bw-light">
+                    <div class="theme-color"></div>
+                    <span>Noir et Blanc Clair</span>
+                </div>
+                <div class="theme-option theme-bw-dark" data-theme="bw-dark">
+                    <div class="theme-color"></div>
+                    <span>Noir et Blanc Sombre</span>
+                </div>
             </div>
             <h1>PROGRAMME D'ENTRAÎNEMENT FOOTBALLEUR PRO</h1>
             <div class="subtitle">Optimisé pour la performance sportive et la réussite scolaire</div>
@@ -687,14 +799,14 @@
             }
         };
 
-        // Activités supplémentaires (hors cours) - REVUES
+        // Activités supplémentaires (hors cours) - CORRIGÉ (lundi)
         const additionalActivities = {
             monday: [
                 { time: "05h00 - 06h00", title: "Réveil & Préparation", type: "rest" },
                 { time: "06h00 - 07h00", title: "Étude (Révisions)", type: "study", desc: "Révision des cours de la veille" },
                 { time: "07h00 - 08h00", title: "Préparation physique", type: "fitness", desc: "Renforcement musculaire" },
                 { time: "13h10 - 14h05", title: "Pause déjeuner", type: "rest" },
-                { time: "18h00 - 19h00", title: "Football technique", type: "football", desc: "Travail technique individuel" },
+                // Supprimé: { time: "18h00 - 19h00", title: "Football technique", type: "football", desc: "Travail technique individuel" },
                 { time: "18h30 - 20h30", title: "Entraînement football", type: "football", desc: "Entraînement obligatoire" },
                 { time: "20h30 - 21h30", title: "Retour & Dîner", type: "rest" },
                 { time: "21h30 - 22h30", title: "Formation en ligne", type: "formation", desc: "Développement de compétences" },
@@ -1024,6 +1136,21 @@
                 `Aujourd'hui : ${dayNames[day]} - ${weekNames[week]}`;
         }
         
+        // Fonction pour changer le thème
+        function setTheme(themeName) {
+            // Retirer toutes les classes de thème
+            document.body.classList.remove('dark-mode', 'light-mode', 'bw-light-mode', 'bw-dark-mode');
+            
+            // Ajouter la classe du thème sélectionné
+            document.body.classList.add(`${themeName}-mode`);
+            
+            // Stocker le thème dans le localStorage
+            localStorage.setItem('selectedTheme', themeName);
+            
+            // Fermer le sélecteur de thèmes
+            document.getElementById('theme-selector').classList.remove('show');
+        }
+        
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             let currentWeek = 'week1';
@@ -1031,26 +1158,38 @@
             let currentViewMode = 'weekly';
             let currentDay = getCurrentDay();
             
+            // Récupérer le thème sauvegardé ou utiliser le thème sombre par défaut
+            const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+            setTheme(savedTheme);
+            
             // Mettre à jour l'indicateur du jour actuel
             updateCurrentDayIndicator(currentDay, currentWeek);
             
             // Générer l'emploi du temps initial
             generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
             
-            // Gestion du thème sombre/clair
-            document.getElementById('theme-toggle').addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('dark-mode')) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-                
-                // Regénérer l'emploi du temps pour appliquer les nouvelles couleurs
-                generateSchedule(currentWeek, currentMatchDay, currentViewMode, currentDay);
+            // Gestion du sélecteur de thèmes
+            document.getElementById('theme-toggle').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('theme-selector').classList.toggle('show');
+            });
+            
+            // Fermer le sélecteur de thèmes en cliquant à l'extérieur
+            document.addEventListener('click', function() {
+                document.getElementById('theme-selector').classList.remove('show');
+            });
+            
+            // Empêcher la fermeture du sélecteur quand on clique dessus
+            document.getElementById('theme-selector').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Gestion des options de thème
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const themeName = this.getAttribute('data-theme');
+                    setTheme(themeName);
+                });
             });
             
             // Gestion des boutons de semaine
